@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Marketing Cloud Engagement — Skills Assessment</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brand: #0176D3;
+    --brand-light: #E6F1FB;
+    --brand-mid: #185FA5;
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --border: #dde2e8;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --hint: #9ca3af;
+    --success: #1D9E75;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .shell {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .survey-header {
+    margin-bottom: 2rem;
+  }
+  .survey-header .logo {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 1rem;
+  }
+  .survey-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .survey-header p {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .progress-wrap {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: 2px;
+    transition: width 0.35s ease;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--hint);
+    margin-bottom: 1.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .section-title svg {
+    color: var(--brand);
+    flex-shrink: 0;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .q-item { margin-bottom: 1.5rem; }
+  .q-item:last-child { margin-bottom: 0; }
+  .q-label {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .rating-row { display: flex; gap: 6px; }
+  .rating-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rating-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
+  .rating-btn.selected { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 11px;
+    color: var(--hint);
+  }
+
+  .yesno-row { display: flex; gap: 8px; }
+  .yn-btn {
+    flex: 1;
+    padding: 9px 0;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+  .yn-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-light); }
+  .yn-btn.selected { background: var(--brand); border-color: var(--brand); color: #fff; }
+
+  select, input[type="text"], input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    appearance: none;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+  }
+  select:focus, input[type="text"]:focus, input[type="email"]:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(1,118,211,0.12);
+  }
+  .input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  @media (max-width: 480px) {
+    .input-row { grid-template-columns: 1fr; }
+    .rating-btn { width: 36px; height: 36px; font-size: 13px; }
+  }
+
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.5rem;
+    align-items: center;
+  }
+  .btn-primary {
+    padding: 10px 24px;
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+  }
+  .btn-primary:hover { background: var(--brand-mid); }
+  .btn-primary:disabled { background: var(--hint); cursor: not-allowed; }
+  .btn-secondary {
+    padding: 10px 18px;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .btn-secondary:hover { border-color: var(--brand); color: var(--brand); }
+
+  .complete-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .complete-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #EAF3DE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+  }
+  .complete-icon svg { color: var(--success); }
+  .complete-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .complete-card p { font-size: 14px; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.6; }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+    margin-bottom: 1.75rem;
+  }
+  .summary-tile {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .summary-tile .t-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--hint); margin-bottom: 4px; }
+  .summary-tile .t-score { font-size: 24px; font-weight: 600; }
+  .score-low { color: #E24B4A; }
+  .score-mid { color: #BA7517; }
+  .score-high { color: var(--success); }
+
+  .hidden { display: none !important; }
+
+  .error-msg {
+    font-size: 13px;
+    color: #E24B4A;
+    margin-top: 8px;
+    display: none;
+  }
+  .submitting-msg {
+    font-size: 13px;
+    color: var(--muted);
+    margin-left: 8px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="survey-header">
+    <div class="logo">Hightide Co.</div>
+    <h1>Marketing Cloud Engagement — Skills Assessment</h1>
+    <p>Rate your comfort level in each area. 1 = no experience, 5 = fully confident. This helps us tailor your onboarding and training plan.</p>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-fill" id="progress" style="width:12%"></div></div>
+  <div class="progress-label" id="step-lbl">Section 1 of 8</div>
+
+  <div id="sections-wrap"></div>
+
+  <div class="nav-row" id="nav-row">
+    <button class="btn-secondary hidden" id="btn-back" onclick="nav(-1)">← Back</button>
+    <button class="btn-primary" id="btn-next" onclick="nav(1)">Next →</button>
+    <span class="error-msg" id="error-msg">Please complete all questions before continuing.</span>
+    <span class="submitting-msg" id="submitting-msg">Submitting…</span>
+  </div>
+
+  <div id="complete-wrap" class="hidden"></div>
+
+</div>
+
+<script>
+const ENDPOINT = "https://script.google.com/a/macros/hightideco.com/s/AKfycbyZRGyKDjlj5Yola-a-ewesQXuq0S1unhwaUrqfi6nEFlj53wFDJ9pTXj7oqumyzBwALA/exec";
+
+const SECTIONS = [
+  {
+    id: "intro",
+    icon: "user",
+    title: "About you",
+    desc: "Just your name and email so we can match responses to the right person.",
+    questions: [
+      { id: "name", text: "Full name", type: "text", placeholder: "Jane Smith" },
+      { id: "email", text: "Work email", type: "email", placeholder: "jane@hightideco.com" }
+    ]
+  },
+  {
+    id: "foundational",
+    icon: "building",
+    title: "Foundational",
+    desc: "Core platform knowledge, account setup, user management, and overall MCE navigation.",
+    questions: [
+      { id: "f1", text: "I can navigate the MCE interface and locate key areas (Email Studio, Contact Builder, etc.)", type: "rating" },
+      { id: "f2", text: "I understand how business units work and when to use them.", type: "rating" },
+      { id: "f3", text: "I can manage users, roles, and permissions within MCE.", type: "rating" },
+      { id: "f4", text: "I understand how MCE connects to other Salesforce clouds (e.g. Sales Cloud, Service Cloud).", type: "rating" }
+    ]
+  },
+  {
+    id: "data",
+    icon: "database",
+    title: "Data",
+    desc: "Contact Builder, data extensions, lists, subscribers, and data hygiene.",
+    questions: [
+      { id: "d1", text: "I can create and manage data extensions (standard and sendable).", type: "rating" },
+      { id: "d2", text: "I understand the difference between lists, data extensions, and publication lists.", type: "rating" },
+      { id: "d3", text: "I can import data into MCE using the Import Wizard or automation.", type: "rating" },
+      { id: "d4", text: "I am comfortable building SQL queries in Query Studio or Automation Studio.", type: "rating" },
+      { id: "d5", text: "I understand how Contact Builder organises data relationships.", type: "rating" }
+    ]
+  },
+  {
+    id: "email",
+    icon: "mail",
+    title: "Email & Content",
+    desc: "Email builds, Content Builder, personalisation, AMPscript, and testing.",
+    questions: [
+      { id: "e1", text: "I can build emails using Content Builder (drag-and-drop and/or HTML).", type: "rating" },
+      { id: "e2", text: "I use Dynamic Content or AMPscript to personalise email content.", type: "rating" },
+      { id: "e3", text: "I can set up and test preview text, subject lines, and pre-header.", type: "rating" },
+      { id: "e4", text: "I know how to send a test email and interpret inbox rendering previews.", type: "rating" },
+      { id: "e5", text: "I am comfortable managing templates and shared content blocks.", type: "rating" },
+      { id: "e6", text: "Do you currently use AMPscript in your email builds?", type: "yesno" }
+    ]
+  },
+  {
+    id: "automations",
+    icon: "gear",
+    title: "Automations",
+    desc: "Automation Studio workflows, scheduled and triggered automations, and activity types.",
+    questions: [
+      { id: "a1", text: "I can build a multi-step automation in Automation Studio.", type: "rating" },
+      { id: "a2", text: "I understand the difference between scheduled and triggered automations.", type: "rating" },
+      { id: "a3", text: "I can configure common activities (import, query, send, data extract).", type: "rating" },
+      { id: "a4", text: "I can troubleshoot a failed automation and identify the error source.", type: "rating" },
+      { id: "a5", text: "Do you currently maintain production automations that run without manual intervention?", type: "yesno" }
+    ]
+  },
+  {
+    id: "journeys",
+    icon: "route",
+    title: "Journeys",
+    desc: "Journey Builder, entry sources, decision splits, goals, and journey testing.",
+    questions: [
+      { id: "j1", text: "I can create and activate a multi-step journey in Journey Builder.", type: "rating" },
+      { id: "j2", text: "I understand the available entry sources (data extension, API, Salesforce, etc.).", type: "rating" },
+      { id: "j3", text: "I can configure decision splits and engagement splits.", type: "rating" },
+      { id: "j4", text: "I know how to set journey goals and exit criteria.", type: "rating" },
+      { id: "j5", text: "I can use the test mode or preview contacts moving through a journey.", type: "rating" },
+      { id: "j6", text: "Have you built journeys that include non-email channels (SMS, push, ads)?", type: "yesno" }
+    ]
+  },
+  {
+    id: "reporting",
+    icon: "chart",
+    title: "Reporting",
+    desc: "Send-level reporting, analytics builder, deliverability, and data extracts.",
+    questions: [
+      { id: "r1", text: "I can pull and interpret standard send reports (opens, clicks, bounces, unsubscribes).", type: "rating" },
+      { id: "r2", text: "I understand the difference between soft and hard bounces and their implications.", type: "rating" },
+      { id: "r3", text: "I can use Analytics Builder or Data Views to create custom reports.", type: "rating" },
+      { id: "r4", text: "I monitor deliverability metrics and take action when rates drop.", type: "rating" },
+      { id: "r5", text: "I can schedule automated data extracts to export reporting data.", type: "rating" }
+    ]
+  },
+  {
+    id: "mobile",
+    icon: "mobile",
+    title: "Mobile",
+    desc: "MobileConnect (SMS/MMS), MobilePush, GroupConnect, and consent management.",
+    questions: [
+      { id: "m1", text: "I understand how MobileConnect (SMS) is configured and managed in MCE.", type: "rating" },
+      { id: "m2", text: "I can create and send an SMS message or keyword campaign.", type: "rating" },
+      { id: "m3", text: "I understand how MobilePush notifications are set up via the MobilePush app.", type: "rating" },
+      { id: "m4", text: "I am aware of consent and compliance requirements for mobile messaging.", type: "rating" },
+      { id: "m5", text: "Which mobile channels do you currently use or plan to use?", type: "select", options: ["None yet", "SMS only", "Push notifications only", "Both SMS and Push", "GroupConnect / WhatsApp", "Multiple channels"] }
+    ]
+  }
+];
+
+const answers = {};
+let currentSection = 0;
+
+function icon(name) {
+  const icons = {
+    user: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+    building: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+    database: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
+    mail: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+    gear: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93 17.66 6.34A8 8 0 1 0 19.07 19.07l1.41 1.41A10 10 0 1 1 19.07 4.93z"/></svg>',
+    route: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>',
+    chart: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+    mobile: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>'
+  };
+  return icons[name] || "";
+}
+
+function scoreColor(avg) {
+  if (avg < 2) return "score-low";
+  if (avg < 3.5) return "score-mid";
+  return "score-high";
+}
+
+function sectionIsComplete(idx) {
+  const sec = SECTIONS[idx];
+  return sec.questions.every(q => {
+    if (q.type === "select") return answers[q.id] && answers[q.id] !== "";
+    if (q.type === "text" || q.type === "email") return answers[q.id] && answers[q.id].trim() !== "";
+    return answers[q.id] !== undefined && answers[q.id] !== "";
+  });
+}
+
+function renderSection(idx) {
+  const sec = SECTIONS[idx];
+  const wrap = document.getElementById("sections-wrap");
+  wrap.innerHTML = "";
+  const card = document.createElement("div");
+  card.className = "card";
+
+  let html = `<div class="section-title" style="color:var(--brand)">${icon(sec.icon)}<span style="color:var(--text)">${sec.title}</span></div>`;
+  html += `<div class="section-desc">${sec.desc}</div>`;
+
+  if (sec.id === "intro") {
+    html += `<div class="input-row">`;
+    sec.questions.forEach(q => {
+      const val = answers[q.id] || "";
+      html += `<div class="input-group"><label>${q.text}</label><input type="${q.type}" id="input-${q.id}" placeholder="${q.placeholder}" value="${val}" oninput="answers['${q.id}']=this.value" /></div>`;
+    });
+    html += `</div>`;
+  } else {
+    sec.questions.forEach(q => {
+      html += `<div class="q-item">`;
+      html += `<div class="q-label">${q.text}</div>`;
+      if (q.type === "rating") {
+        html += `<div class="rating-row">`;
+        for (let i = 1; i <= 5; i++) {
+          const sel = answers[q.id] === i ? " selected" : "";
+          html += `<button class="rating-btn${sel}" onclick="setAnswer('${q.id}',${i},this,'rating')">${i}</button>`;
+        }
+        html += `</div><div class="scale-labels"><span>1 — no experience</span><span>5 — fully confident</span></div>`;
+      } else if (q.type === "yesno") {
+        const ysel = answers[q.id] === "Yes" ? " selected" : "";
+        const nsel = answers[q.id] === "No" ? " selected" : "";
+        html += `<div class="yesno-row"><button class="yn-btn${ysel}" onclick="setAnswer('${q.id}','Yes',this,'yn')">Yes</button><button class="yn-btn${nsel}" onclick="setAnswer('${q.id}','No',this,'yn')">No</button></div>`;
+      } else if (q.type === "select") {
+        const saved = answers[q.id] || "";
+        html += `<select onchange="answers['${q.id}']=this.value"><option value="">— select one —</option>${q.options.map(o => `<option value="${o}"${saved===o?" selected":""}>${o}</option>`).join("")}</select>`;
+      }
+      html += `</div>`;
+    });
+  }
+
+  card.innerHTML = html;
+  wrap.appendChild(card);
+
+  const total = SECTIONS.length;
+  document.getElementById("step-lbl").textContent = `Section ${idx + 1} of ${total}`;
+  document.getElementById("progress").style.width = Math.round(((idx + 1) / total) * 100) + "%";
+  document.getElementById("btn-back").classList.toggle("hidden", idx === 0);
+  document.getElementById("btn-next").textContent = idx === total - 1 ? "Submit" : "Next →";
+  document.getElementById("error-msg").style.display = "none";
+}
+
+function setAnswer(id, val, el, type) {
+  answers[id] = val;
+  if (type === "rating") {
+    el.closest(".rating-row").querySelectorAll(".rating-btn").forEach(b => b.classList.remove("selected"));
+  } else {
+    el.closest(".yesno-row").querySelectorAll(".yn-btn").forEach(b => b.classList.remove("selected"));
+  }
+  el.classList.add("selected");
+  document.getElementById("error-msg").style.display = "none";
+}
+
+function nav(dir) {
+  if (dir === 1) {
+    if (!sectionIsComplete(currentSection)) {
+      document.getElementById("error-msg").style.display = "inline";
+      return;
+    }
+    if (currentSection === SECTIONS.length - 1) {
+      submitSurvey();
+      return;
+    }
+  }
+  currentSection = Math.max(0, Math.min(SECTIONS.length - 1, currentSection + dir));
+  renderSection(currentSection);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function avg(keys) {
+  const vals = keys.map(k => parseFloat(answers[k])).filter(v => !isNaN(v));
+  if (!vals.length) return null;
+  return Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10;
+}
+
+function submitSurvey() {
+  const btn = document.getElementById("btn-next");
+  const msg = document.getElementById("submitting-msg");
+  btn.disabled = true;
+  msg.style.display = "inline";
+
+  const payload = Object.assign({}, answers);
+
+  fetch(ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => showComplete())
+  .catch(() => showComplete());
+}
+
+function showComplete() {
+  document.getElementById("sections-wrap").classList.add("hidden");
+  document.getElementById("nav-row").classList.add("hidden");
+  document.getElementById("step-lbl").classList.add("hidden");
+  document.getElementById("progress").style.width = "100%";
+
+  const cats = [
+    { label: "Foundational", keys: ["f1","f2","f3","f4"] },
+    { label: "Data", keys: ["d1","d2","d3","d4","d5"] },
+    { label: "Email & Content", keys: ["e1","e2","e3","e4","e5"] },
+    { label: "Automations", keys: ["a1","a2","a3","a4"] },
+    { label: "Journeys", keys: ["j1","j2","j3","j4","j5"] },
+    { label: "Reporting", keys: ["r1","r2","r3","r4","r5"] },
+    { label: "Mobile", keys: ["m1","m2","m3","m4"] }
+  ];
+
+  let tiles = cats.map(c => {
+    const a = avg(c.keys);
+    const disp = a !== null ? a.toFixed(1) : "—";
+    const cls = a !== null ? scoreColor(a) : "";
+    return `<div class="summary-tile"><div class="t-label">${c.label}</div><div class="t-score ${cls}">${disp}</div></div>`;
+  }).join("");
+
+  const name = answers["name"] ? answers["name"].split(" ")[0] : "there";
+
+  document.getElementById("complete-wrap").classList.remove("hidden");
+  document.getElementById("complete-wrap").innerHTML = `
+    <div class="complete-card">
+      <div class="complete-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Thanks, ${name}!</h2>
+      <p>Your responses have been submitted. Here's a snapshot of your self-rated comfort scores across each category.</p>
+      <div class="summary-grid">${tiles}</div>
+      <p style="font-size:13px;color:var(--hint);">Your team lead will be in touch with a personalised training plan based on these results.</p>
+    </div>`;
+}
+
+renderSection(0);
+</script>
+</body>
+</html>
